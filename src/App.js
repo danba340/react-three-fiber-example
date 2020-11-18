@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState, useRef } from 'react'
+import { Canvas, extend, useFrame, useThree } from 'react-three-fiber'
+import { Physics, useBox } from "use-cannon"
+import { OrbitControls, Sky } from "drei"
 
-function App() {
+import "./styles.css";
+
+import Lights from "./Lights"
+import Rabbit from "./Rabbit"
+import Grass from "./Grass"
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Canvas camera={{
+      position: [10, 10, 15]
+    }} shadowMap >
+      <OrbitControls />
+      <Sky />
+      <fog attach="fog" args={["white", 20, 70]} />
+      <Lights />
+      <Physics
+        iterations={20}
+        tolerance={0.0001}
+        defaultContactMaterial={{
+          friction: 1,
+          restitution: 0.5,
+          // contactEquationStiffness: 1e7,
+          // contactEquationRelaxation: 1,
+          // frictionEquationStiffness: 1e7,
+          // frictionEquationRelaxation: 2,
+        }}
+        gravity={[0, -10, 0]}
+      >
+        <Rabbit position={[0, 0, 0]} />
+        <Grass position={[0, -10, 0]} />
+      </Physics>
+    </Canvas >
+  )
 }
-
-export default App;
