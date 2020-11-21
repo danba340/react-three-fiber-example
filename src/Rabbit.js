@@ -25,20 +25,19 @@ function Model({ position }) {
   const pressedS = useKey("s")
   const [frameCount, setFrameCount] = useState(0);
   const gltf = useLoader(GLTFLoader, "/models/rabbit/rabbit.gltf")
-  const [ref, api] = useBox(() => ({ position, mass: 0.1, args: [0.5, 1, 0.5], onCollide: e => console.log(e.contact.impactVelocity) }))
+  const [ref, api] = useBox(() => ({ position, mass: 1, args: [1.2, 1, 1.2], onCollide: e => console.log(e.contact.impactVelocity) }))
   useFrame(state => {
     setFrameCount((prev) => {
       return prev + 1
     })
-    if (frameCount > 100) {
-      api.velocity.set(0, 2, 2)
+    if (frameCount > 30) {
+      api.velocity.set(0, 2, 0.5)
       setFrameCount(0)
     }
     if (pressedS) {
       console.log(state)
       api.velocity.set(0, 2, 2)
     }
-    api.rotation.set(0, 0, 0)
   })
   return (
     <mesh ref={ref} name={"rabbit"} castShadow opacity={0.5} >

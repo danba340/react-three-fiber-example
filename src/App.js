@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Canvas, extend, useFrame, useThree } from 'react-three-fiber'
-import { Physics, useBox } from "use-cannon"
+import React from 'react'
+import { Canvas } from 'react-three-fiber'
+import { Physics } from "use-cannon"
 import { OrbitControls, Sky } from "drei"
 
 import "./styles.css";
@@ -12,7 +12,8 @@ import Grass from "./Grass"
 export default function App() {
   return (
     <Canvas camera={{
-      position: [10, 10, 15]
+      position: [10, 10, 15],
+      fov: 50
     }} shadowMap >
       <OrbitControls />
       <Sky />
@@ -22,16 +23,16 @@ export default function App() {
         iterations={20}
         tolerance={0.0001}
         defaultContactMaterial={{
-          friction: 1,
-          restitution: 0.5,
-          // contactEquationStiffness: 1e7,
-          // contactEquationRelaxation: 1,
-          // frictionEquationStiffness: 1e7,
-          // frictionEquationRelaxation: 2,
+          friction: 0.1,
+          restitution: 0.1,
+          contactEquationStiffness: 1e7,
+          contactEquationRelaxation: 1,
+          frictionEquationStiffness: 1e7,
+          frictionEquationRelaxation: 2,
         }}
         gravity={[0, -10, 0]}
       >
-        <Rabbit position={[0, 0, 0]} />
+        <Rabbit position={[0, -9, 0]} />
         <Grass position={[0, -10, 0]} />
       </Physics>
     </Canvas >
