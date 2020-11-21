@@ -1,40 +1,48 @@
-import React from 'react'
-import { Canvas } from 'react-three-fiber'
-import { Physics } from "use-cannon"
-import { OrbitControls, Sky } from "drei"
-
+import React from "react";
+import { Canvas } from "react-three-fiber";
+import { OrbitControls, Stars } from "drei";
+import { Physics, usePlane, useBox } from "use-cannon";
 import "./styles.css";
 
-import Lights from "./Lights"
-import Rabbit from "./Rabbit"
-import Grass from "./Grass"
+function Box(props) {
+  const [ref, api] = useBox(() => ({ mass: 1, position: [0, 2, 0] }));
+  return (
+    <mesh
+      onClick={() => {
+        api.velocity.set(0, 2, 0);
+      }}
+      ref={ref}
+      position={[0, 2, 0]}
+    >
+      <boxBufferGeometry attach="geometry" />
+      <meshLambertMaterial attach="material" color="hotpink" />
+    </mesh>
+  );
+}
+
+function Plane(props) {
+  const [ref] = usePlane(() => ({
+    rotation: [-Math.PI / 2, 0, 0],
+  }));
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]}>
+      <planeBufferGeometry attach="geometry" args={[100, 100]} />
+      <meshLambertMaterial attach="material" color="lightblue" />
+    </mesh>
+  );
+}
 
 export default function App() {
   return (
-    <Canvas camera={{
-      position: [10, 10, 15],
-      fov: 50
-    }} shadowMap >
+    <Canvas>
       <OrbitControls />
-      <Sky />
-      <fog attach="fog" args={["white", 20, 70]} />
-      <Lights />
-      <Physics
-        iterations={20}
-        tolerance={0.0001}
-        defaultContactMaterial={{
-          friction: 0.1,
-          restitution: 0.1,
-          contactEquationStiffness: 1e7,
-          contactEquationRelaxation: 1,
-          frictionEquationStiffness: 1e7,
-          frictionEquationRelaxation: 2,
-        }}
-        gravity={[0, -10, 0]}
-      >
-        <Rabbit position={[0, -9, 0]} />
-        <Grass position={[0, -10, 0]} />
+      <Stars />
+      <ambientLight intensity={0.5} />
+      <spotLight position={[10, 15, 10]} angle={0.3} />
+      <Physics>
+        <Box />
+        <Plane />
       </Physics>
-    </Canvas >
-  )
+    </Canvas>
+  );
 }
