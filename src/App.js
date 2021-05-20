@@ -4,7 +4,7 @@ import { OrbitControls, Stars } from "drei";
 import { Physics, usePlane, useBox } from "use-cannon";
 import "./styles.css";
 
-function Box(props) {
+function Box() {
   const [ref, api] = useBox(() => ({ mass: 1, position: [0, 2, 0] }));
   return (
     <mesh
@@ -20,12 +20,12 @@ function Box(props) {
   );
 }
 
-function Plane(props) {
+function Plane() {
   const [ref] = usePlane(() => ({
     rotation: [-Math.PI / 2, 0, 0],
   }));
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]}>
+    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]}>
       <planeBufferGeometry attach="geometry" args={[100, 100]} />
       <meshLambertMaterial attach="material" color="lightblue" />
     </mesh>

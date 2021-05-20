@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-three/drei": "^2.2.7",
     "drei": "^1.5.7",
     "react": "",
     "react-dom": "",
